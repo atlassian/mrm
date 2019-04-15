@@ -27,7 +27,7 @@
 
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>mrm</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
+  <version>1.2.1-atlassian-m01-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Mock Repository Manager: Project</name>
@@ -75,9 +75,9 @@
   </modules>
 
   <scm>
-    <connection>scm:git:https://github.com/mojohaus/mrm.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/mojohaus/mrm.git</developerConnection>
-    <url>https://github.com/mojohaus/mrm</url>
+    <connection>scm:git:https://github.com/atlassian/mrm.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/atlassian/mrm.git</developerConnection>
+    <url>https://github.com/atlassian/mrm</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
@@ -88,6 +88,17 @@
     <system>Travis</system>
     <url>https://travis-ci.org/mojohaus/mrm</url>
   </ciManagement>
+
+  <distributionManagement>
+    <repository>
+      <id>atlassian-3rdparty</id>
+      <url>https://packages.atlassian.com/maven/3rdparty</url>
+    </repository>
+    <snapshotRepository>
+      <id>atlassian-3rdparty-snapshot</id>
+      <url>https://packages.atlassian.com/maven/3rdparty-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <properties>
     <scmpublish.content>target/staging/mrm</scmpublish.content>
@@ -270,6 +281,35 @@
             <goals>
               <goal>attach-descriptor</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-license</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/META-INF</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${user.dir}</directory>
+                  <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                    <include>license.txt</include>
+                    <include>notice.txt</include>
+                  </includes>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
           </execution>
         </executions>
       </plugin>
